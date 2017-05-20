@@ -1,8 +1,7 @@
 <template>
     <div id="location">
         <div v-if="isReady">
-            <div id="map"></div>
-            <google-map></google-map>
+            <google-map :center="center" :zoom="12"></google-map>
         </div>
         <div v-else>
             Loading...
@@ -15,33 +14,37 @@
     import env from './env.js';
 
     import {load as loadGoogleApi, loaded as loadedGoogleApi, Map, Marker} from 'vue-google-maps';
+    import {getLocation} from "./GeoLocationPromisified";
 
-    loadGoogleApi(env.googleMapsApiKey);
-    let apiLoaded = false;
-    let googleApi;
-
-    loadedGoogleApi.then((api)=> {
-        apiLoaded = true;
-    });
-
-        export default {
+    export default {
         name: 'location',
-        _apiReady: false,
-        _api: null,
-        _map: null,
         created() {
+            // FIXME: Don't let this get called twice, it'll load the API multiple times, which is bad.
+            let promise;
+//            if(!google || !google.maps) {
+                loadGoogleApi(env.googleMapsApiKey);
+                promise = loadedGoogleApi.then(() => {
+                    return getLocation()
+                });
+//            }
+//            else{
+//                promise = new Promise((resolve)=>resolve());
+//            }
+            promise.then((location) => {
+                this.center = {lat: location.latitude, lng: location.longitude};
+                this.isReady = true;
+            });
 
         },
         data () {
             return {
-
+                isReady: false,
+                center: {lat: 0, lng: 0}
             }
         },
-        props: {
-        },
-        computed: {
-            isReady: () => apiLoaded,
-        },
+        methods: {},
+        props: {},
+        computed: {},
         components: {
             'google-map': Map
         }
