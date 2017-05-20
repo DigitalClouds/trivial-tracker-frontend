@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <h1></h1>
+    <h1>Trivial Tracker</h1>
+    <h2>Get it wrong and go for a walk <sup>or else...</sup></h2>
+
     <h2>Essential Links</h2>
     <ul>
       <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
