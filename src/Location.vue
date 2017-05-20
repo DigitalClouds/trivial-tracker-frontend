@@ -5,6 +5,10 @@
 </template>
 
 <script>
+
+    import env from './env.js';
+    import GoogleMapsApiLoader from 'google-maps-api-loader';
+
     export default {
         name: 'location',
         data () {
