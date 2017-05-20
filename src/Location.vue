@@ -1,5 +1,6 @@
 <template>
     <div id="location">
+        <layout></layout>
         <div class="location-wrapper" v-if="isReady">
             <google-map :center="center" :zoom="14">
                 <google-marker :position="center"></google-marker>
@@ -19,6 +20,7 @@
     import * as VueGoogleMaps from 'vue2-google-maps';
     import {getLocation} from "./GeoLocationPromisified";
     import {getNearbyLocation} from './LocationTargetService';
+    import Layout from "./Layout.vue";
 
     export default {
         name: 'location',
@@ -55,6 +57,7 @@
         props: ['randomLocationRadius'],
         computed: {},
         components: {
+            Layout,
             'google-map': VueGoogleMaps.Map,
             'google-marker': VueGoogleMaps.Marker
         }

@@ -1,28 +1,24 @@
 <template>
-    <div id="app">
+    <div id="layout">
         <h1>Trek or Tweet</h1>
         <h2>Get it wrong and go for a walk <sup>or else...</sup></h2>
-        <location random-location-radius="1000"></location>
     </div>
 </template>
 
 <script>
-    import Location from './Location.vue';
+
     export default {
-        name: 'app',
-        components: {
-            'location': Location
-        },
+        name: 'layout',
         data () {
             return {
-                msg: 'Welcome to Your Vue.js App'
+
             }
         }
     }
 </script>
 
 <style lang="scss">
-    #app {
+    #layout {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;

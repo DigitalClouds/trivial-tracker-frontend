@@ -1,5 +1,6 @@
 <template>
     <div id="question">
+        <layout></layout>
         <div v-if="question === undefined">
             <form>
                 <h1>Category</h1>
@@ -55,8 +56,11 @@
 </template>
 
 <script>
+    import Layout from "./Layout.vue";
 
     export default {
+        components: {
+            Layout},
         name: 'Question',
         data () {
             return {
@@ -101,7 +105,15 @@
             },
 
             sendAnswer (e) {
-
+                if (e.currentTarget.innerText == this.correctAnswer)
+                {
+                    // Correct
+                }
+                else
+                {
+                    // Wrong
+                    this.$router.push({name: 'location', params: {randomLocationRadius: 1000}});
+                }
             }
         }
     }
