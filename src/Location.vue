@@ -5,6 +5,9 @@
                 <google-marker :position="center"></google-marker>
                 <google-marker :position="targetPosition"></google-marker>
             </google-map>
+            <countdown :time="totalTime * 1000" v-on:countdownend="timerExpired">
+                <template scope="props">Time remaining: {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds</template>
+            </countdown>
         </div>
         <div class="location-wrapper" v-else>
             Loading...
@@ -17,8 +20,13 @@
     import env from './env.js';
 
     import * as VueGoogleMaps from 'vue2-google-maps';
+    import VueCountdown from 'vue-countdown';
     import {getLocation} from "./GeoLocationPromisified";
-    import {getNearbyLocation} from './LocationTargetService';
+    import {getNearbyLocation, getPathToTarget, getDistanceBetween} from './LocationTargetService';
+
+    // leeway for end point
+    const threshold = 20;
+    const tickRate = 5000;
 
     export default {
         name: 'location',
@@ -40,23 +48,67 @@
                 return getNearbyLocation(this.center, Number(this.randomLocationRadius));
             }).then((targetLocation) => {
                 this.targetPosition = targetLocation.geometry.location;
+                console.dir(this.targetPosition);
+                return getPathToTarget(this.center, this.targetPosition);
+            }).then((directions) => {
+                const route = directions.routes[0];
+                const routeLeg = route.legs[0];this.isReady = true;
+                this.totalTime = routeLeg.duration.value;
+                this.interval = setInterval(() => {
+                    getLocation().then((location) => {
+                        this.center = {lat: location.coords.latitude, lng: location.coords.longitude};
+                        const currentLocation = {lat(){ return location.coords.latitude }, lng(){return location.coords.longitude} };
+                        this.checkDistance(currentLocation, this.targetPosition).then((inRange) => {
+                            if(inRange){
+                                this.gotoNextQuestionOrWin();
+                            }
+                        }, tickRate);
+                    })
+
+                });
                 this.isReady = true;
-            });
+            })
 
         },
         data () {
             return {
                 isReady: false,
                 center: {lat: 0, lng: 0},
-                targetPosition: {lat: 0, lng: 0}
+                targetPosition: {lat: 0, lng: 0},
+                totalTime: 0,
+                ticking: true,
+                interval: 0
             }
         },
-        methods: {},
+        methods: {
+            timerExpired(){
+                this.ticking = false;
+                this.checkDistance().then((inRange) => {
+                    if(inRange){
+                        // go to next question
+                        this.gotoNextQuestionOrWin();
+                    }
+                    else{
+                        // go to fail screen (and post to twitter)
+                    }
+                });
+            },
+            checkDistance(){
+                return getLocation().then((location) =>{
+                    const currentLocation = {lat(){ return location.coords.latitude }, lng(){return location.coords.longitude} };
+                    return getDistanceBetween(currentLocation, this.targetPosition) <= threshold;
+                })
+            },
+            gotoNextQuestionOrWin(){
+                console.log('NEXT QUESTION PLEASE!');
+            }
+        },
         props: ['randomLocationRadius'],
         computed: {},
         components: {
             'google-map': VueGoogleMaps.Map,
-            'google-marker': VueGoogleMaps.Marker
+            'google-marker': VueGoogleMaps.Marker,
+            'countdown': VueCountdown
         }
     }
 </script>
