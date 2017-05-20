@@ -1,8 +1,9 @@
 <template>
     <div id="location">
         <div class="location-wrapper" v-if="isReady">
-            <google-map :center="center" :zoom="12">
+            <google-map :center="center" :zoom="14">
                 <google-marker :position="center"></google-marker>
+                <google-marker :position="targetPosition"></google-marker>
             </google-map>
         </div>
         <div class="location-wrapper" v-else>
@@ -17,25 +18,28 @@
 
     import * as VueGoogleMaps from 'vue2-google-maps';
     import {getLocation} from "./GeoLocationPromisified";
+    import {getNearbyLocation} from './LocationTargetService';
 
     export default {
         name: 'location',
         created() {
             // FIXME: Don't let this get called twice, it'll load the API multiple times, which is bad.
             let promise;
-//            if(!google || !google.maps) {
+            if(!window.google || !window.google.maps) {
                 VueGoogleMaps.load(env.googleMapsApiKey,null,['places','geometry']);
 
                 promise = VueGoogleMaps.loaded.then(() => {
-                    return getLocation()
+                    return getLocation();
                 });
-//            }
-//            else{
-//                promise = new Promise((resolve)=>resolve());
-//            }
+            }
+            else{
+                promise = getLocation();
+            }
             promise.then((location) => {
-
                 this.center = {lat: location.coords.latitude, lng: location.coords.longitude};
+                return getNearbyLocation(this.center, Number(this.randomLocationRadius));
+            }).then((targetLocation) => {
+                this.targetPosition = targetLocation.geometry.location;
                 this.isReady = true;
             });
 
@@ -43,11 +47,12 @@
         data () {
             return {
                 isReady: false,
-                center: {lat: 0, lng: 0}
+                center: {lat: 0, lng: 0},
+                targetPosition: {lat: 0, lng: 0}
             }
         },
         methods: {},
-        props: {},
+        props: ['randomLocationRadius'],
         computed: {},
         components: {
             'google-map': VueGoogleMaps.Map,

@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <h1>Trivial Tracker</h1>
+        <h1>Trek or Tweet</h1>
         <h2>Get it wrong and go for a walk <sup>or else...</sup></h2>
-        <location></location>
+        <location random-location-radius="1000"></location>
     </div>
 </template>
 

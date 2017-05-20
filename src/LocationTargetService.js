@@ -2,7 +2,7 @@
  * Created by dosborne on 20/05/17.
  */
 "use strict";
-export function getNearbyPoint(location, radius) {
+export function getNearbyLocation(location, radius) {
     const output = document.createElement('div');
     const placesService = new google.maps.places.PlacesService(output);
     return new Promise((resolve, reject) => {
