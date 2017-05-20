@@ -24,7 +24,7 @@
             // FIXME: Don't let this get called twice, it'll load the API multiple times, which is bad.
             let promise;
 //            if(!google || !google.maps) {
-                VueGoogleMaps.load(env.googleMapsApiKey);
+                VueGoogleMaps.load(env.googleMapsApiKey,null,['places','geometry']);
 
                 promise = VueGoogleMaps.loaded.then(() => {
                     return getLocation()
