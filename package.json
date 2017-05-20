@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "google-maps-api-loader": "^0.3.0",
-    "vue": "^2.2.1",
-    "vue-google-maps": "^0.1.21"
+    "vue": "^2.3.3",
+    "vue2-google-maps": "^0.7.5"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
