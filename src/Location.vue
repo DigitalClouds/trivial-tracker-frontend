@@ -6,7 +6,7 @@
                 <google-marker :position="center"></google-marker>
                 <google-marker :position="targetPosition"></google-marker>
             </google-map>
-            <countdown :time="totalTime * 1000" v-on:countdownend="timerExpired">
+            <countdown :time="totalTime * 1000" v-on:countdownend="timerExpired" ref="countdown">
                 <template scope="props">Time remaining: {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds</template>
             </countdown>
         </div>
@@ -62,6 +62,7 @@
                         this.checkDistance(currentLocation, this.targetPosition).then((inRange) => {
                             if(inRange){
                                 this.gotoNextQuestionOrWin();
+                                clearInterval(this.interval);
                             }
                         }, tickRate);
                     })
@@ -102,6 +103,8 @@
             },
             gotoNextQuestionOrWin(){
                 console.log('NEXT QUESTION PLEASE!');
+                this.$refs.countdown.stop();
+                alert("WINNAR!");
             }
         },
         props: ['randomLocationRadius'],
