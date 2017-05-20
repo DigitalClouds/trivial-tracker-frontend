@@ -3,7 +3,7 @@
  */
 export class LocationTargetService{
     constructor(api){
-
+        this.api = api;
     }
 
     getNearbyPoints(){

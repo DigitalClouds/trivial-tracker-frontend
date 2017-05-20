@@ -1,9 +1,11 @@
 <template>
     <div id="location">
-        <div v-if="isReady">
-            <google-map :center="center" :zoom="12"></google-map>
+        <div class="location-wrapper" v-if="isReady">
+            <google-map :center="center" :zoom="12">
+                <google-marker :position="center"></google-marker>
+            </google-map>
         </div>
-        <div v-else>
+        <div class="location-wrapper" v-else>
             Loading...
         </div>
     </div>
@@ -13,7 +15,7 @@
 
     import env from './env.js';
 
-    import {load as loadGoogleApi, loaded as loadedGoogleApi, Map, Marker} from 'vue-google-maps';
+    import * as VueGoogleMaps from 'vue2-google-maps';
     import {getLocation} from "./GeoLocationPromisified";
 
     export default {
@@ -22,8 +24,9 @@
             // FIXME: Don't let this get called twice, it'll load the API multiple times, which is bad.
             let promise;
 //            if(!google || !google.maps) {
-                loadGoogleApi(env.googleMapsApiKey);
-                promise = loadedGoogleApi.then(() => {
+                VueGoogleMaps.load(env.googleMapsApiKey);
+
+                promise = VueGoogleMaps.loaded.then(() => {
                     return getLocation()
                 });
 //            }
@@ -31,7 +34,8 @@
 //                promise = new Promise((resolve)=>resolve());
 //            }
             promise.then((location) => {
-                this.center = {lat: location.latitude, lng: location.longitude};
+
+                this.center = {lat: location.coords.latitude, lng: location.coords.longitude};
                 this.isReady = true;
             });
 
@@ -46,19 +50,19 @@
         props: {},
         computed: {},
         components: {
-            'google-map': Map
+            'google-map': VueGoogleMaps.Map,
+            'google-marker': VueGoogleMaps.Marker
         }
     }
 </script>
 
 <style lang="scss">
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
+    .location-wrapper{
+        height: 600px;
+    }
+
+    .vue-map-container{
+        height:100%;
     }
 
     h1, h2 {
