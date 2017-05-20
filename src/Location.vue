@@ -104,7 +104,7 @@
             gotoNextQuestionOrWin(){
                 console.log('NEXT QUESTION PLEASE!');
                 this.$refs.countdown.stop();
-                alert("WINNAR!");
+                this.$router.push('question');
             }
         },
         props: ['randomLocationRadius'],
