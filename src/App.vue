@@ -4,6 +4,7 @@
     <h1>Trivial Tracker</h1>
     <h2>Get it wrong and go for a walk <sup>or else...</sup></h2>
 
+    <location></location>
     <h2>Essential Links</h2>
     <ul>
       <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
@@ -22,8 +23,12 @@
 </template>
 
 <script>
+  import Location from './Location.js';
 export default {
   name: 'app',
+    components: {
+      'location': Location
+    },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
