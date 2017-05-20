@@ -26,7 +26,7 @@
     import {getNearbyLocation, getPathToTarget, getDistanceBetween} from './LocationTargetService';
     import Layout from "./Layout.vue";
     // leeway for end point
-    const threshold = 20;
+    const threshold = 100;
     const tickRate = 5000;
 
     export default {
