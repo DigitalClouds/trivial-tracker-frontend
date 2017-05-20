@@ -1,27 +1,21 @@
 import Vue from 'vue'
-import App from './App.vue'
+import VueRouter from 'vue-router'
 import Question from './Question.vue'
-
-/*new Vue({
- el: '#app',
- render: h => h(Question)
- })*/
-
+import Location from './Location.vue'
 
 const NotFound = { template: '<p>Page not found</p>' };
-const routes = {
-    '/': App,
-    '/question': Question
-};
+const routes = [
+    { path: '/', component: Question},
+    { path: '/location', name: 'location', component: Location, props: true}
+];
+
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+    routes
+});
+
 new Vue({
     el: '#app',
-    data: {
-        currentRoute: window.location.pathname
-    },
-    computed: {
-        ViewComponent () {
-            return routes[this.currentRoute] || NotFound
-        }
-    },
-    render (h) { return h(this.ViewComponent) }
+    router
 });

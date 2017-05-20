@@ -1,5 +1,6 @@
 <template>
     <div id="location">
+        <layout></layout>
         <div class="location-wrapper" v-if="isReady">
             <google-map :center="center" :zoom="14">
                 <google-marker :position="center"></google-marker>
@@ -23,7 +24,7 @@
     import VueCountdown from 'vue-countdown';
     import {getLocation} from "./GeoLocationPromisified";
     import {getNearbyLocation, getPathToTarget, getDistanceBetween} from './LocationTargetService';
-
+    import Layout from "./Layout.vue";
     // leeway for end point
     const threshold = 20;
     const tickRate = 5000;
@@ -106,6 +107,7 @@
         props: ['randomLocationRadius'],
         computed: {},
         components: {
+            Layout,
             'google-map': VueGoogleMaps.Map,
             'google-marker': VueGoogleMaps.Marker,
             'countdown': VueCountdown
