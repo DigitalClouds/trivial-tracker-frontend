@@ -45,12 +45,14 @@
                 promise = getLocation();
             }
             promise.then((location) => {
+                this.directionsService = new google.maps.DirectionsService();
+                this.placesService = new google.maps.places.PlacesService(document.createElement('div'));
                 this.center = {lat: location.coords.latitude, lng: location.coords.longitude};
-                return getNearbyLocation(this.center, Number(this.randomLocationRadius));
+                return getNearbyLocation(this.center, Number(this.randomLocationRadius), this.placesService);
             }).then((targetLocation) => {
                 this.targetPosition = targetLocation.geometry.location;
                 console.dir(this.targetPosition);
-                return getPathToTarget(this.center, this.targetPosition);
+                return getPathToTarget(this.center, this.targetPosition, this.directionsService);
             }).then((directions) => {
                 const route = directions.routes[0];
                 const routeLeg = route.legs[0];this.isReady = true;

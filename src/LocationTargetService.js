@@ -2,9 +2,10 @@
  * Created by dosborne on 20/05/17.
  */
 "use strict";
-export function getNearbyLocation(location, radius) {
+
+export function getNearbyLocation(location, radius, placesService) {
     const output = document.createElement('div');
-    const placesService = new google.maps.places.PlacesService(output);
+
     return new Promise((resolve, reject) => {
         // TODO: get the keyword from a reverse geocode of the current loc, rather than the hardcoded one
         placesService.radarSearch({location, radius, keyword: 'Lincoln'}, (results, status)=>{
@@ -36,8 +37,8 @@ export function getNearbyLocation(location, radius) {
     })
 }
 
-export function getPathToTarget(origin, destination){
-    const directionsService = new google.maps.DirectionsService();
+export function getPathToTarget(origin, destination, directionsService){
+
     const request = {
         origin,
         destination,
