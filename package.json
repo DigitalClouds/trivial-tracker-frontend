@@ -12,6 +12,7 @@
     "google-maps-api-loader": "^0.3.0",
     "vue": "^2.3.3",
     "vue-countdown": "github:xkeshi/vue-countdown",
+    "vue-router": "^2.5.3",
     "vue2-google-maps": "^0.7.5"
   },
   "devDependencies": {
