@@ -51,7 +51,14 @@
             <p v-for="answer in answers">
                 <button v-on:click="sendAnswer">{{ answer }}</button>
             </p>
+
+            <div id="green-banner">
+                <div id="success">SUCCESS</div>
+                <div id="safe">Your followers won't know you're dumb......</div>
+                <div id="fornow">for now.</div>
+            </div>
         </div>
+        <div id="score">SCORE:<br>{{score}}</div>
     </div>
 </template>
 
@@ -74,8 +81,15 @@
         data () {
             return {
                 question: undefined,
+                score: 0,
                 answers: [],
-                correctAnswer: undefined
+                correctAnswer: undefined,
+                points: {
+                    easy: 1,
+                    medium: 2,
+                    hard: 3
+                },
+                currentDifficulty: undefined
             }
         },
         methods: {
@@ -89,10 +103,12 @@
                     if (response.results)
                     {
                         const result = response.results[0];
+                        console.log(result);
                         this.question = decodeURIComponent(result.question);
                         this.answers = result.incorrect_answers.map(e=> decodeURIComponent(e));
                         this.correctAnswer = decodeURIComponent(result.correct_answer);
                         this.answers.splice(Math.floor(Math.random() * (this.answers.length + 1)), 0, this.correctAnswer);
+                        this.currentDifficulty = result.difficulty;
                     }
                     else
                     {
@@ -117,6 +133,13 @@
                 if (e.currentTarget.innerText == this.correctAnswer)
                 {
                     // Correct
+                    document.getElementById("green-banner").classList.add('load');
+                    document.getElementById("success").classList.add('load');
+                    setTimeout(() => {document.getElementById("safe").classList.add('load')}, 1250);
+                    setTimeout(() => {document.getElementById("fornow").classList.add('load')}, 2500);
+                    setTimeout(function(){
+                        this.question = undefined; this.score+=this.points[this.currentDifficulty];
+                    }.bind(this), 4000);
                 }
                 else
                 {
@@ -138,6 +161,94 @@
         text-align: center;
         color: #2c3e50;
         margin-top: 60px;
+    }
+
+    #green-banner {
+        opacity: 0;
+        height: auto;
+        width: 100%;
+        position: absolute;
+        background-color: forestgreen;
+        margin-top: 25px;
+        padding-bottom: 25px;
+        text-align: center;
+
+        -webkit-transition: opacity 0.25s ease-in;
+        -moz-transition: opacity 0.25s ease-in;
+        -ms-transition: opacity 0.25s ease-in;
+        -o-transition: opacity 0.25s ease-in;
+        transition: opacity 0.25s ease-in;
+
+        &.load {
+            opacity: 1;
+        }
+    }
+
+    #success {
+        opacity: 0;
+        font-size: 50px;
+        color: white;
+        margin-top: 25px;
+        text-align: center;
+        line-height: 100%;
+
+        -webkit-transition: opacity 0.25s ease-in;
+        -moz-transition: opacity 0.25s ease-in;
+        -ms-transition: opacity 0.25s ease-in;
+        -o-transition: opacity 0.25s ease-in;
+        transition: opacity 0.25s ease-in;
+
+        &.load {
+            opacity: 1;
+        }
+    }
+
+    #safe {
+        opacity: 0;
+        font-size: 30px;
+        color: white;
+        text-align: center;
+
+        -webkit-transition: opacity 0.25s ease-in;
+        -moz-transition: opacity 0.25s ease-in;
+        -ms-transition: opacity 0.25s ease-in;
+        -o-transition: opacity 0.25s ease-in;
+        transition: opacity 0.25s ease-in;
+
+        &.load {
+            opacity: 1;
+        }
+    }
+
+    #fornow {
+        opacity: 0;
+        font-size: 30px;
+        color: white;
+        text-align: center;
+
+        -webkit-transition: opacity 0.25s ease-in;
+        -moz-transition: opacity 0.25s ease-in;
+        -ms-transition: opacity 0.25s ease-in;
+        -o-transition: opacity 0.25s ease-in;
+        transition: opacity 0.25s ease-in;
+
+        &.load {
+            opacity: 1;
+        }
+    }
+
+    #score {
+        background-color: black;
+        color: orange;
+        width: auto;
+        height: auto;
+        padding: 0px 20px 0px 20px;
+        font-size: 2em;
+        position: absolute;
+        margin-right: 2%;
+        margin-top: 2%;
+        right: 0;
+        top: 0;
     }
 
     h1, h2 {
