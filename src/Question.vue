@@ -57,10 +57,19 @@
 
 <script>
     import Layout from "./Layout.vue";
+    import {OAuth} from 'oauthio-web';
+
 
     export default {
         components: {
-            Layout},
+            Layout
+        },
+        created(){
+            OAuth.callback('twitter').done((twitter) => {
+                debugger;
+                console.dir(twitter);
+            });
+        },
         name: 'Question',
         data () {
             return {

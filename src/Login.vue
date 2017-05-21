@@ -1,16 +1,36 @@
 <template>
     <div id="app">
-        <p>Login to your Twitter account <sup>so we can tell everyone how stupid you are when you get questions wrong...</sup></p>
+        <layout></layout>
+        <p>
+            Login to your Twitter account (so we can tell everyone you if you get a question wrong and don't reach the destination in time)</p>
     </div>
 </template>
 
 <script>
+    import {OAuth} from 'oauthio-web';
+    import Layout from "./Layout.vue";
+    import env from './env.js';
     export default {
         name: 'login',
+        created() {
+            OAuth.initialize(env.twitterAppKey);
+            OAuth.redirect('twitter', `${location.origin}/#/question/`)
+                .done((twitter) => {
+                    this.twitter = twitter;
+                    console.dir(twitter);
+                })
+                .fail(error => {
+                    console.dir(error);
+                })
+        },
         data () {
             return {
-                msg: 'Welcome to Your Vue.js App'
+                msg: 'Welcome to Your Vue.js App',
+                twitter: null,
             }
+        },
+        components: {
+            'layout': Layout
         }
     }
 </script>
