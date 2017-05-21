@@ -6,8 +6,8 @@ import Login from './Login.vue'
 
 const NotFound = { template: '<p>Page not found</p>' };
 const routes = [
-    { path: '/', component: Login},
-    { path: '/question', component: Question},
+    { path: '/', component: Question},
+   // { path: '/question', component: Question},
     { path: '/location', name: 'location', component: Location, props: true}
 ];
 
