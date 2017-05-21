@@ -148,7 +148,7 @@
                 else
                 {
                     // Wrong
-                    this.$router.push({name: 'location', params: {randomLocationRadius: 1000}});
+                    this.$router.push({name: 'location', params: {randomLocationRadius: 500}});
                 }
             }
         }
