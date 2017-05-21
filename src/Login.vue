@@ -1,8 +1,9 @@
 <template>
-    <div id="app">
+    <div id="login">
         <layout></layout>
         <p>
             Login to your Twitter account (so we can tell everyone you if you get a question wrong and don't reach the destination in time)</p>
+        <button v-on:click="doTwitterLogin">Allow</button>
     </div>
 </template>
 
@@ -14,19 +15,17 @@
         name: 'login',
         created() {
             OAuth.initialize(env.twitterAppKey);
-            OAuth.redirect('twitter', `${location.origin}/#/question/`)
-                .done((twitter) => {
-                    this.twitter = twitter;
-                    console.dir(twitter);
-                })
-                .fail(error => {
-                    console.dir(error);
-                })
+
         },
         data () {
             return {
                 msg: 'Welcome to Your Vue.js App',
                 twitter: null,
+            }
+        },
+        methods: {
+            doTwitterLogin(){
+                OAuth.redirect('twitter', `${location.origin}/#/question/`);
             }
         },
         components: {
@@ -36,13 +35,12 @@
 </script>
 
 <style lang="scss">
-    #app {
+    #login {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
     }
 
     h1, h2 {

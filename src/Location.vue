@@ -1,6 +1,8 @@
 <template>
     <div id="location">
         <layout></layout>
+        <h1>WRONG!</h1>
+        <p>Get the to marked position before time runs out, and we won't tweet your embarrassing failure!</p>
         <div class="location-wrapper" v-if="isReady">
             <google-map :center="center" :zoom="14">
                 <google-marker :position="center"></google-marker>

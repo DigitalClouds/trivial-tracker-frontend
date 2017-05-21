@@ -65,7 +65,9 @@
 <script>
     import Layout from "./Layout.vue";
     import {OAuth} from 'oauthio-web';
+    import env from "./env";
 
+    OAuth.initialize(env.twitterAppKey);
 
     export default {
         components: {
@@ -75,6 +77,7 @@
             OAuth.callback('twitter').done((twitter) => {
                 debugger;
                 console.dir(twitter);
+                this.twitter = twitter;
             });
         },
         name: 'Question',
@@ -89,7 +92,8 @@
                     medium: 2,
                     hard: 3
                 },
-                currentDifficulty: undefined
+                currentDifficulty: undefined,
+                twitter: null,
             }
         },
         methods: {
@@ -160,7 +164,6 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
     }
 
     #green-banner {
