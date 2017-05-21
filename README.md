@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+Here be terrible code, written while sleep deprived.
+
 ## Build Setup
 
 ``` bash
