@@ -3,8 +3,8 @@
         <layout></layout>
         <div class="location-wrapper" v-if="isReady">
             <google-map :center="center" :zoom="14">
-                <google-marker :position="center"></google-marker>
-                <google-marker :position="targetPosition"></google-marker>
+                <google-marker :position="center" :icon="{url: './src/assets/green_marker.png'}"></google-marker>
+                <google-marker :position="targetPosition" :animation="2"></google-marker>
             </google-map>
             <countdown :time="totalTime * 1000" v-on:countdownend="timerExpired" ref="countdown">
                 <template scope="props">Time remaining: {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds</template>
